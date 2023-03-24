@@ -28,11 +28,15 @@ function Book(title, author, pages, read, id) {
 
 const defaultxd = new Book("Default Title", "Author", 420, true, 0)
 myLibrary.push(defaultxd)
-const defaultxdd = new Book("Default Title", "Author", 420, true, 0)
+const defaultxdd = new Book("Default Title", "Author", 420, true, 1)
 myLibrary.push(defaultxd)
-const defaultxddd = new Book("Default Title", "Author", 420, true, 0)
+const defaultxddd = new Book("Default Title", "Author", 420, true, 2)
 myLibrary.push(defaultxd)
-const defaultxdddd = new Book("Default Title", "Author", 420, true, 0)
+const defaultxdddd = new Book("Default Title", "Author", 420, true, 3)
+myLibrary.push(defaultxd)
+const defaultxddddd = new Book("Default Title", "Author", 420, true, 4)
+myLibrary.push(defaultxd)
+const defaultxdddddd = new Book("Default Title", "Author", 420, true, 5)
 myLibrary.push(defaultxd)
 
 
@@ -66,6 +70,14 @@ function showLibrary() {
         pagesEl.textContent = `Total Pages: ${book.pages}`
         bookCard.appendChild(pagesEl)
 
+        const labelEl = document.createElement("label")
+        labelEl.innerHTML = "Read?"
+        bookCard.appendChild(labelEl)
+
+        const readEl = document.createElement("input")
+        readEl.type = "checkbox"
+        bookCard.appendChild(readEl)
+
         bookCardContainer.appendChild(bookCard)
     })
 }
@@ -82,6 +94,13 @@ addBookBtn.addEventListener("click", (event) => {
         event.preventDefault()
         addBookToLibrary()
         showLibrary()
+        modal.classList.remove("open")
+        formContainer.classList.remove("open")
+    }
+})
+
+modal.addEventListener("click", (event) => {
+    if(event.target.classList.contains("modal")) {
         modal.classList.remove("open")
         formContainer.classList.remove("open")
     }
