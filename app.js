@@ -26,23 +26,14 @@ function Book(title, author, pages, read, id) {
     }
 }
 
-const defaultxd = new Book("Default Title", "Author", 420, true, 0)
-myLibrary.push(defaultxd)
-const defaultxdd = new Book("Default Title", "Author", 420, true, 1)
-myLibrary.push(defaultxd)
-const defaultxddd = new Book("Default Title", "Author", 420, true, 2)
-myLibrary.push(defaultxd)
-const defaultxdddd = new Book("Default Title", "Author", 420, true, 3)
-myLibrary.push(defaultxd)
-const defaultxddddd = new Book("Default Title", "Author", 420, true, 4)
-myLibrary.push(defaultxd)
-const defaultxdddddd = new Book("Default Title", "Author", 420, true, 5)
-myLibrary.push(defaultxd)
+addBookToLibrary(new Book("To Kill a Mockingbird", "Harper Lee", 336, false, 0))
+addBookToLibrary(new Book("The Great Gatsby", "F. Scott Fitzgerald", 180, true, 1))
+addBookToLibrary(new Book("The Catcher in the Rye", "J.D. Salinger", 224, false, 2))
+addBookToLibrary(new Book("The Hobbit", "J.R.R. Tolkien", 300, false, 3))
+addBookToLibrary(new Book("Pride and Prejudice", "Jane Austen", 432, false, 4))
+addBookToLibrary(new Book("Harry Potter and the Philosopher's Stone", "J.K. Rowling", 223, false, 5))
 
-
-let bookID = 0
-function addBookToLibrary() {
-    const userBook = new Book(titleInput.value, authorInput.value, pagesInput.value, readInput.checked, bookID += 1)
+function addBookToLibrary(userBook) {
     console.log(userBook.info())
     myLibrary.push(userBook)
     titleInput.value = ""
@@ -76,9 +67,29 @@ function showLibrary() {
 
         const readEl = document.createElement("input")
         readEl.type = "checkbox"
+        readEl.classList.add("card-checkbox")
+        if(book.read) {
+            readEl.checked = true
+        }
         bookCard.appendChild(readEl)
 
+        const idEl = document.createElement("p")
+        idEl.textContent = `ID: ${book.id}`
+        bookCard.appendChild(idEl)
+        
         bookCardContainer.appendChild(bookCard)
+
+        bookCard.addEventListener("click", (event) => {
+            if (event.target.matches("input")) {
+                const foundBook = myLibrary.find(obj => obj.title === event.target.parentNode.last) // Find book with matching title
+                if (foundBook.read) {
+                    foundBook.read = false
+                } else {
+                    foundBook.read = true
+                }
+                console.log(foundBook)
+            }
+        })
     })
 }
 
@@ -89,10 +100,11 @@ newBookBtn.addEventListener("click", () => {
     formContainer.classList.add("open")
 })
 
+let bookID = 5
 addBookBtn.addEventListener("click", (event) => {
     if(titleInput.value && authorInput.value && pagesInput.value){
         event.preventDefault()
-        addBookToLibrary()
+        addBookToLibrary(new Book(titleInput.value, authorInput.value, pagesInput.value, readInput, bookID += 1))
         showLibrary()
         modal.classList.remove("open")
         formContainer.classList.remove("open")
