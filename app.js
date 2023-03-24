@@ -4,6 +4,9 @@ const pagesInput = document.querySelector("#pages-input")
 const readInput = document.querySelector("#read-input")
 const addBookBtn = document.querySelector("#add-book-btn")
 const bookCardContainer = document.querySelector("#book-card-container")
+const formContainer = document.querySelector(".form-container")
+const newBookBtn = document.querySelector(".new-book-btn")
+const modal = document.querySelector(".modal")
 
 let myLibrary = []
 
@@ -23,8 +26,14 @@ function Book(title, author, pages, read, id) {
     }
 }
 
-const TPAB = new Book("TPAB", "Kendrick Lamar", 18, true, 0)
-myLibrary.push(TPAB)
+const defaultxd = new Book("Default Title", "Author", 420, true, 0)
+myLibrary.push(defaultxd)
+const defaultxdd = new Book("Default Title", "Author", 420, true, 0)
+myLibrary.push(defaultxd)
+const defaultxddd = new Book("Default Title", "Author", 420, true, 0)
+myLibrary.push(defaultxd)
+const defaultxdddd = new Book("Default Title", "Author", 420, true, 0)
+myLibrary.push(defaultxd)
 
 
 let bookID = 0
@@ -32,11 +41,15 @@ function addBookToLibrary() {
     const userBook = new Book(titleInput.value, authorInput.value, pagesInput.value, readInput.checked, bookID += 1)
     console.log(userBook.info())
     myLibrary.push(userBook)
+    titleInput.value = ""
+    authorInput.value = ""
+    pagesInput.value = ""
+    readInput.checked = false
 }
 
 function showLibrary() {
     bookCardContainer.innerHTML = ""  // Delete all cards
-    
+
     myLibrary.forEach(function(book) {
         const bookCard = document.createElement("div")
     
@@ -59,7 +72,17 @@ function showLibrary() {
 
 showLibrary()
 
-addBookBtn.addEventListener("click", () => {
-    addBookToLibrary()
-    console.log("clicked")
+newBookBtn.addEventListener("click", () => {
+    modal.classList.add("open")
+    formContainer.classList.add("open")
+})
+
+addBookBtn.addEventListener("click", (event) => {
+    if(titleInput.value && authorInput.value && pagesInput.value){
+        event.preventDefault()
+        addBookToLibrary()
+        showLibrary()
+        modal.classList.remove("open")
+        formContainer.classList.remove("open")
+    }
 })
