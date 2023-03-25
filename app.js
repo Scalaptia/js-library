@@ -1,3 +1,5 @@
+let myLibrary = []
+
 const titleInput = document.querySelector("#title-input")
 const authorInput = document.querySelector("#author-input")
 const pagesInput = document.querySelector("#pages-input")
@@ -7,8 +9,12 @@ const bookCardContainer = document.querySelector("#book-card-container")
 const formContainer = document.querySelector(".form-container")
 const newBookBtn = document.querySelector(".new-book-btn")
 const modal = document.querySelector(".modal")
+const localStorageBooks = JSON.parse(localStorage.getItem("myLibrary"))
 
-let myLibrary = []
+if (localStorageBooks) {
+    myLibrary = localStorageBooks
+    showLibrary()
+}
 
 function Book(title, author, pages, read, id) {
     this.title = title
@@ -26,16 +32,11 @@ function Book(title, author, pages, read, id) {
     }
 }
 
-addBookToLibrary(new Book("To Kill a Mockingbird", "Harper Lee", 336, false, generateRandomId()))
-addBookToLibrary(new Book("The Great Gatsby", "F. Scott Fitzgerald", 180, true, generateRandomId()))
-addBookToLibrary(new Book("The Catcher in the Rye", "J.D. Salinger", 224, false, generateRandomId()))
-addBookToLibrary(new Book("The Hobbit", "J.R.R. Tolkien", 300, false, generateRandomId()))
-addBookToLibrary(new Book("Pride and Prejudice", "Jane Austen", 432, false, generateRandomId()))
-addBookToLibrary(new Book("Harry Potter and the Philosopher's Stone", "J.K. Rowling", 223, false, generateRandomId()))
 
 function addBookToLibrary(userBook) {
     console.log(userBook.info())
-    myLibrary.push(userBook)
+    myLibrary.unshift(userBook)
+    localStorage.setItem("myLibrary", JSON.stringify(myLibrary))
     titleInput.value = ""
     authorInput.value = ""
     pagesInput.value = ""
@@ -45,7 +46,7 @@ function addBookToLibrary(userBook) {
 function showLibrary() {
     bookCardContainer.innerHTML = ""  // Delete all cards
 
-    myLibrary.reverse().forEach(function(book) {
+    myLibrary.forEach(function(book) {
         const bookCard = document.createElement("div")
     
         bookCard.classList.add("book-card")
@@ -84,7 +85,6 @@ function showLibrary() {
         bookCard.setAttribute("bookID", `${book.id}`)
         bookCardContainer.appendChild(bookCard)
 
-
         bookCard.addEventListener("click", (event) => {
             if (event.target.matches("input")) {
                 const foundBook = myLibrary.find(book => book.id === parseInt(event.target.parentNode.parentNode.getAttribute("bookID"))) // Find book with matching id
@@ -93,13 +93,14 @@ function showLibrary() {
                 } else {
                     foundBook.read = true
                 }
-                console.log(foundBook)
+                localStorage.setItem("myLibrary", JSON.stringify(myLibrary))
             }
         })
 
         deleteBtn.addEventListener("click", (event) => {
             const bookId = event.target.parentNode.parentNode.getAttribute("bookID")
             myLibrary = myLibrary.filter(book => book.id !== parseInt(bookId))
+            localStorage.setItem("myLibrary", JSON.stringify(myLibrary))
             showLibrary()
         })
     })

@@ -28,7 +28,7 @@
             </div>
             <div class="input-container">
                 <label class="input-label" for="pages-input">Pages</label>
-                <input class="number-input" type="number" name="pages-input" id="pages-input" required>
+                <input class="number-input" type="number" name="pages-input" id="pages-input" min="0" oninput="this.value = Math.abs(this.value)" required>
             </div>
             <div class="input-container read-div">
                 <label class="input-label" for="read-input">Read</label>

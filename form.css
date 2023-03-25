@@ -48,3 +48,9 @@
     border: 1px solid black;
     border-radius: 2px;
 }
+
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
