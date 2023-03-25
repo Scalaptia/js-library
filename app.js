@@ -61,17 +61,19 @@ function showLibrary() {
         pagesEl.textContent = `Total Pages: ${book.pages}`
         bookCard.appendChild(pagesEl)
 
-        const labelEl = document.createElement("label")
-        labelEl.innerHTML = "Read?"
-        bookCard.appendChild(labelEl)
+        const readDiv = document.createElement("div")
+        bookCard.appendChild(readDiv)
+            const labelEl = document.createElement("label")
+            labelEl.innerHTML = "Read?"
+            readDiv.appendChild(labelEl)
 
-        const readEl = document.createElement("input")
-        readEl.type = "checkbox"
-        readEl.classList.add("card-checkbox")
-        if(book.read) {
-            readEl.checked = true
-        }
-        bookCard.appendChild(readEl)
+            const readEl = document.createElement("input")
+            readEl.type = "checkbox"
+            readEl.classList.add("card-checkbox")
+            if(book.read) {
+                readEl.checked = true
+            }
+            bookCard.appendChild(readEl)
 
         const idEl = document.createElement("p")
         idEl.textContent = `ID: ${book.id}`
@@ -81,7 +83,8 @@ function showLibrary() {
 
         bookCard.addEventListener("click", (event) => {
             if (event.target.matches("input")) {
-                const foundBook = myLibrary.find(obj => obj.title === event.target.parentNode.last) // Find book with matching title
+                console.log(event.target.parentNode.lastChild.innerHTML)
+                const foundBook = myLibrary.find(obj => obj.id === event.target.parentNode.lastChild.innerHTML) // Find book with matching id
                 if (foundBook.read) {
                     foundBook.read = false
                 } else {
