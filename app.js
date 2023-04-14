@@ -11,36 +11,37 @@ const newBookBtn = document.querySelector(".new-book-btn")
 const modal = document.querySelector(".modal")
 const localStorageBooks = JSON.parse(localStorage.getItem("myLibrary"))
 
-if (localStorageBooks) {
-    myLibrary = localStorageBooks
-    showLibrary()
-}
-
-function Book(title, author, pages, read, id) {
-    this.title = title
-    this.author = author
-    this.pages = pages
-    this.read = read
-    this.id = id
-    this.info = () => {
-        if (this.read) {
-            readStatus = "already read"
-        } else {
-            readStatus = "not read yet"
-        }
-        return `${this.title} by ${this.author}, ${this.pages} pages, ${readStatus}`
+class Book {
+    constructor(title, author, pages, read) {
+        this.title = title
+        this.author = author
+        this.pages = pages
+        this.read = read
+        this.id = this.generateRandomID()
     }
-}
 
+    addBookToLibrary() {
+        myLibrary.unshift(this)
+        localStorage.setItem("myLibrary", JSON.stringify(myLibrary))
+        titleInput.value = ""
+        authorInput.value = ""
+        pagesInput.value = ""
+        readInput.checked = false
+    }
 
-function addBookToLibrary(userBook) {
-    console.log(userBook.info())
-    myLibrary.unshift(userBook)
-    localStorage.setItem("myLibrary", JSON.stringify(myLibrary))
-    titleInput.value = ""
-    authorInput.value = ""
-    pagesInput.value = ""
-    readInput.checked = false
+    generateRandomID() {
+        if (this.id) {
+            throw "Book already has an ID"
+        } else {
+            let randomNum = 0
+            do {
+                const min = 100000
+                const max = 999999
+                randomNum = Math.floor(Math.random() * (max - min + 1) + min)
+            } while (myLibrary.find(obj => obj.id === randomNum)) // Check if ID is repeated
+            return randomNum
+        }
+    }
 }
 
 function showLibrary() {
@@ -106,14 +107,16 @@ function showLibrary() {
     })
 }
 
-function generateRandomId() {
-    randomNum = 0
-    do {
-        const min = 100000
-        const max = 999999
-        randomNum = Math.floor(Math.random() * (max - min + 1) + min)
-    } while (myLibrary.find(obj => obj.id === randomNum)) // Check if ID is repeated
-    return randomNum
+if (localStorageBooks) {
+    myLibrary = localStorageBooks
+    showLibrary()
+} else {
+    new Book("To Kill a Mockingbird", "Harper Lee", 336, true).addBookToLibrary()
+    new Book("The Great Gatsby", "F. Scott Fitzgerald", 180, false).addBookToLibrary()
+    new Book("Pride and Prejudice", "Jane Austen", 432, false).addBookToLibrary()
+    new Book("The Catcher in the Rye", "J.D. Salinger", 240, false).addBookToLibrary()
+    new Book("1984", "George Orwell", 328, true).addBookToLibrary()
+    new Book("The Hobbit", "J.R.R. Tolkien", 310, true).addBookToLibrary()
 }
 
 showLibrary()
@@ -126,7 +129,7 @@ newBookBtn.addEventListener("click", () => {
 addBookBtn.addEventListener("click", (event) => {
     if(titleInput.value && authorInput.value && pagesInput.value){
         event.preventDefault()
-        addBookToLibrary(new Book(titleInput.value, authorInput.value, pagesInput.value, readInput.checked, bookID = generateRandomId()))
+        new Book(titleInput.value, authorInput.value, pagesInput.value, readInput.checked).addBookToLibrary()
         showLibrary()
         modal.classList.remove("open")
         formContainer.classList.remove("open")

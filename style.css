@@ -25,3 +25,33 @@
 .new-book-btn:hover {
     background-color: rgb(214, 214, 214);
 }
+
+footer {
+    background-color: whitesmoke;
+    padding: 10px;
+    position: fixed;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+  }
+  
+  footer p {
+    display: inline-block;
+    margin: 0;
+  }
+  
+  footer img {
+    display: inline-block;
+    margin-left: 15px;
+    vertical-align: middle;
+    width: 35px;
+  }
+  
+  @media (max-width: 768px) {
+    footer {
+      display: none;
+    }
+  }
